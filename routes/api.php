@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('/update/{user}',[ProfileController::class, 'updateProfile']);
         Route::put('/update-info/{user}',[ProfileController::class,'updateInfo']);
     });
+    Route::get('/all-user', [CustomerController::class, 'allUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
