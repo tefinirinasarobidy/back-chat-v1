@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Backend\ChatController;
+use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +25,15 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // https://chatback-sarobidy.herokuapp.com/ https://git.heroku.com/chatback-sarobidy.git
 // git push heroku main
+
+Route::group(['middleware' => ['auth:web']], function () {
+    Route::get('dashboard', function ()  {return view('backoffice.index') ;})->name('dashboard');
+    Route::prefix('user')->name('user.')->group(function(){
+        Route::get('/',[UserController::class,'index'])->name('index');
+        Route::delete('/delete/{user}',[UserController::class,'destroy'])->name('delete');
+    });
+    Route::prefix('conversation')->name('conversation.')->group(function(){
+        Route::get('/',[ChatController::class,'index'])->name('index');
+        Route::post('/resete',[ChatController::class,'reseteTabele'])->name('resete');
+    });
+});
